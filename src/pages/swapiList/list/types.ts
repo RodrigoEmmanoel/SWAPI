@@ -1,3 +1,7 @@
+interface IPropsList {
+  onlyFavorites?: boolean;
+}
+
 export interface BodyRequest {
   count: number;
   next: string | null;
