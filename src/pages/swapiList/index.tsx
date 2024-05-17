@@ -1,29 +1,15 @@
 import styles from "./index.module.css";
-import axios from "axios";
-import { useEffect } from "react";
-import store from "../../stores/store";
+import Filter from "./filter";
+import List from "./list";
 
 function SwapiList() {
-  const { swapiList, setSwapiList } = store.swapiResponse();
-
-  useEffect(() => {
-    if (swapiList.requested) return;
-    axios
-      .get("https://swapi.dev/api/people?page=1")
-      .then((response) => {
-        setSwapiList(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  });
-
   return (
-    <>
-      {swapiList.results.map((result) => (
-        <h1>{result.name}</h1>
-      ))}
-    </>
+    <div className={styles.swapi}>
+      <div className={styles.swapi__card}>
+        <Filter />
+        <List />
+      </div>
+    </div>
   );
 }
 
