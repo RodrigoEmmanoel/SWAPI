@@ -3,6 +3,12 @@ export interface ISwapiResponse {
   setSwapiList: (swapiList: BodyRequest) => void;
 }
 
+export interface IListFavorites {
+  favorites: Result[];
+  addFavorite: (favorite: Result) => void;
+  removeFavorite: (favorite: Result) => void;
+}
+
 export interface BodyRequest {
   requested: boolean;
   count: number;
@@ -28,4 +34,5 @@ export interface Result {
   created: string;
   edited: string;
   url: string;
+  favorite: boolean;
 }
