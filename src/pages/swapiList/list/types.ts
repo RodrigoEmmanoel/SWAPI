@@ -1,4 +1,5 @@
-interface IPropsList {
+export interface IPropsList {
+  listSearch: string;
   onlyFavorites?: boolean;
 }
 

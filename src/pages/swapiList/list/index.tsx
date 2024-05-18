@@ -12,7 +12,7 @@ import { Result, IPropsList } from "./types";
 import SvgEmptyState from "../../../components/svgImages/svgEmptyState";
 import SvgStar from "../../../components/svgImages/svgStar";
 
-export default function List({ onlyFavorites }: IPropsList) {
+export default function List({ listSearch, onlyFavorites }: IPropsList) {
   const [loading, setLoading] = useState<boolean>(true);
   const { swapiList, setSwapiList } = store.swapiResponse();
   const { favorites, addFavorite, removeFavorite } = store.listFavorites();
@@ -21,7 +21,8 @@ export default function List({ onlyFavorites }: IPropsList) {
     if (result.favorite) {
       removeFavorite(result);
     } else {
-      addFavorite(result);
+      const newResult = { ...result, favorite: true };
+      addFavorite(newResult);
     }
 
     setSwapiList({
@@ -35,10 +36,17 @@ export default function List({ onlyFavorites }: IPropsList) {
     });
   };
 
-  useEffect(() => {
-    if (swapiList.requested) return;
+  function getSwapiList(params?: string) {
+    setLoading(true);
+
+    let url = "https://swapi.dev/api/people";
+
+    if (params) {
+      url = "https://swapi.dev/api/people" + params;
+    }
+
     axios
-      .get("https://swapi.dev/api/people?page=1")
+      .get(url)
       .then((response) => {
         const results = response.data.results.map((result: Result) => {
           return { ...result, favorite: false };
@@ -65,6 +73,15 @@ export default function List({ onlyFavorites }: IPropsList) {
         console.log(error);
         setLoading(false);
       });
+  }
+
+  useEffect(() => {
+    getSwapiList(listSearch ? `?search=${listSearch}` : "");
+  }, [listSearch]);
+
+  useEffect(() => {
+    if (swapiList.requested) return;
+    getSwapiList();
   }, []);
 
   return (
@@ -84,37 +101,82 @@ export default function List({ onlyFavorites }: IPropsList) {
         </thead>
         {!loading && swapiList.results.length !== 0 && (
           <tbody className={styles.swapi__list_tbody}>
-            {(onlyFavorites ? favorites : swapiList.results).map((result) => (
-              <tr key={result.name} className={styles.swapi__list_tbody_tr}>
-                <td className={styles.swapi__list_tbody_td}>
-                  <div className={styles.swapi__list_tbody_td_user}>
-                    <div className={styles.swapi__list_tbody_td_photo}>
-                      {getInitials(result.name)}
-                    </div>
-                    <div className={styles.swapi__list_tbody_td_info}>
+            {!onlyFavorites
+              ? swapiList.results.map((result) => (
+                  <tr key={result.name} className={styles.swapi__list_tbody_tr}>
+                    <td className={styles.swapi__list_tbody_td}>
+                      <div className={styles.swapi__list_tbody_td_user}>
+                        <div className={styles.swapi__list_tbody_td_photo}>
+                          {getInitials(result.name)}
+                        </div>
+                        <div className={styles.swapi__list_tbody_td_info}>
+                          <span className={styles.swapi__list_tbody_td_text}>
+                            {result.name}
+                          </span>
+                          <span
+                            className={styles.swapi__list_tbody_td_info_gender}
+                          >
+                            {formatGenderToPtBr(result.gender)}
+                          </span>
+                        </div>
+                      </div>
+                    </td>
+                    <td className={styles.swapi__list_tbody_td}>
                       <span className={styles.swapi__list_tbody_td_text}>
-                        {result.name}
+                        {formatHeight(result.height)}
                       </span>
-                      <span className={styles.swapi__list_tbody_td_info_gender}>
-                        {formatGenderToPtBr(result.gender)}
-                      </span>
-                    </div>
-                  </div>
-                </td>
-                <td className={styles.swapi__list_tbody_td}>
-                  <span className={styles.swapi__list_tbody_td_text}>
-                    {formatHeight(result.height)}
-                  </span>
-                </td>
-                <td className={styles.swapi__list_tbody_td_favorite}>
-                  <div>
-                    <button onClick={() => toggleFavorite(result)}>
-                      <SvgStar filled={result.favorite} />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
+                    </td>
+                    <td className={styles.swapi__list_tbody_td_favorite}>
+                      <div>
+                        <button onClick={() => toggleFavorite(result)}>
+                          <SvgStar filled={result.favorite} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              : favorites
+                  .filter((f) =>
+                    f.name.toLowerCase().includes(listSearch.toLowerCase()),
+                  )
+                  .map((result) => (
+                    <tr
+                      key={result.name}
+                      className={styles.swapi__list_tbody_tr}
+                    >
+                      <td className={styles.swapi__list_tbody_td}>
+                        <div className={styles.swapi__list_tbody_td_user}>
+                          <div className={styles.swapi__list_tbody_td_photo}>
+                            {getInitials(result.name)}
+                          </div>
+                          <div className={styles.swapi__list_tbody_td_info}>
+                            <span className={styles.swapi__list_tbody_td_text}>
+                              {result.name}
+                            </span>
+                            <span
+                              className={
+                                styles.swapi__list_tbody_td_info_gender
+                              }
+                            >
+                              {formatGenderToPtBr(result.gender)}
+                            </span>
+                          </div>
+                        </div>
+                      </td>
+                      <td className={styles.swapi__list_tbody_td}>
+                        <span className={styles.swapi__list_tbody_td_text}>
+                          {formatHeight(result.height)}
+                        </span>
+                      </td>
+                      <td className={styles.swapi__list_tbody_td_favorite}>
+                        <div>
+                          <button onClick={() => toggleFavorite(result)}>
+                            <SvgStar filled={result.favorite} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
           </tbody>
         )}
       </table>
