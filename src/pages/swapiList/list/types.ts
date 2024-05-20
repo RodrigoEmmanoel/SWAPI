@@ -1,6 +1,7 @@
 export interface IPropsList {
   listSearch: string;
   onlyFavorites?: boolean;
+  pageSelected?: number;
 }
 
 export interface BodyRequest {

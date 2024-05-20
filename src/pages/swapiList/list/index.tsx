@@ -1,6 +1,6 @@
 import styles from "./index.module.css";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import store from "../../../stores/store";
 import {
   formatGenderToPtBr,
@@ -12,10 +12,16 @@ import { Result, IPropsList } from "./types";
 import SvgEmptyState from "../../../components/svgImages/svgEmptyState";
 import SvgStar from "../../../components/svgImages/svgStar";
 
-export default function List({ listSearch, onlyFavorites }: IPropsList) {
+export default function List({
+  listSearch,
+  onlyFavorites,
+  pageSelected,
+}: IPropsList) {
+  const isFirstRender = useRef(true);
   const [loading, setLoading] = useState<boolean>(true);
   const { swapiList, setSwapiList } = store.swapiResponse();
   const { favorites, addFavorite, removeFavorite } = store.listFavorites();
+  const { openModal } = store.openModalSwapiError();
 
   const toggleFavorite = (result: Result) => {
     if (result.favorite) {
@@ -68,21 +74,34 @@ export default function List({ listSearch, onlyFavorites }: IPropsList) {
         });
 
         setLoading(false);
+        openModal();
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
+        openModal();
         setLoading(false);
       });
   }
 
   useEffect(() => {
-    getSwapiList(listSearch ? `?search=${listSearch}` : "");
-  }, [listSearch]);
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
 
-  useEffect(() => {
-    if (swapiList.requested) return;
-    getSwapiList();
-  }, []);
+    if (pageSelected) {
+      let params = "";
+
+      if (listSearch) {
+        params = `?search=${listSearch}&page=${pageSelected}`;
+      } else {
+        params = `?page=${pageSelected}`;
+      }
+
+      getSwapiList(params);
+    } else {
+      if (listSearch) getSwapiList(listSearch ? `?search=${listSearch}` : "");
+    }
+  }, [pageSelected, listSearch]);
 
   return (
     <div className={styles.swapi__list}>
