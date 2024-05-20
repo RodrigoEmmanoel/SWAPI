@@ -6,9 +6,14 @@ import { useEffect, useState } from "react";
 interface InputTextProps {
   onValueChange: (value: string) => void;
   id?: string;
+  onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-export default function InputText({ onValueChange, id }: InputTextProps) {
+export default function InputText({
+  onValueChange,
+  id,
+  onKeyDown,
+}: InputTextProps) {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
@@ -22,6 +27,7 @@ export default function InputText({ onValueChange, id }: InputTextProps) {
         Pesquisar pelo nome
       </label>
       <input
+        onKeyDown={onKeyDown}
         id={id}
         className={styles.text_input}
         type="text"

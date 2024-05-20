@@ -2,10 +2,13 @@
   display: flex;
   align-items: center;
   border-radius: 12px;
-  padding: 0 12px;
+  padding: 0 10px;
   background: #27272A;
-  width: 20vw;
   cursor: text;
+  width: 95%;
+  @media (min-width: 770px) {
+    width: 250px;
+  }
 }
 
 .text svg {
