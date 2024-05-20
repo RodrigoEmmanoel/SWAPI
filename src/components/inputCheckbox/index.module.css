@@ -1,7 +1,12 @@
 .checkbox {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
+  align-self: center;
+  margin-top: 10px;
+  @media (min-width: 768px) {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin-top: 0;
+  }
 }
 
 .container {
@@ -17,6 +22,7 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  color: #C9CACB;
 }
 
 .container input {
@@ -25,6 +31,7 @@
   cursor: pointer;
   height: 0;
   width: 0;
+  border: 1px solid #C9CACB;
 }
 
 .checkmark {
@@ -35,7 +42,7 @@
   width: 16px;
   background-color:#27272A;
   border-radius: 6px;
-  border: 2px solid #27272A;
+  border: 1px solid #C9CACB;
   transition: .2s;
 }
 
@@ -44,8 +51,8 @@
 }
 
 .container input:checked ~ .checkmark {
-  background-color: #006FEE;
-  border-color: #006FEE;
+  background-color: #1c001e;
+  border-color: #1c001e;
 }
 
 .checkmark:after {
