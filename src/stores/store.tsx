@@ -2,6 +2,8 @@ import { create } from "zustand";
 import {
   ISwapiResponse,
   IListFavorites,
+  IStatePageSwapi,
+  IOpenModalSwapiError,
   BodyRequest,
   Result,
 } from "./storeTypes";
@@ -35,7 +37,20 @@ const listFavorites = create<IListFavorites>((set) => ({
     }),
 }));
 
+const statePageSwapi = create<IStatePageSwapi>((set) => ({
+  page: 1,
+  setPage: (page: number) => set({ page }),
+}));
+
+const openModalSwapiError = create<IOpenModalSwapiError>((set) => ({
+  isModalOpen: false,
+  openModal: () => set({ isModalOpen: true }),
+  closeModal: () => set({ isModalOpen: false }),
+}));
+
 export default {
   swapiResponse,
   listFavorites,
+  statePageSwapi,
+  openModalSwapiError,
 };

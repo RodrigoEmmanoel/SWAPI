@@ -9,6 +9,17 @@ export interface IListFavorites {
   removeFavorite: (favorite: Result) => void;
 }
 
+export interface IStatePageSwapi {
+  page: number;
+  setPage: (page: number) => void;
+}
+
+export interface IOpenModalSwapiError {
+  isModalOpen: boolean;
+  openModal: () => void;
+  closeModal: () => void;
+}
+
 export interface BodyRequest {
   requested: boolean;
   count: number;
