@@ -1,0 +1,35 @@
+.pagination {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    color: #C9CACB;
+}
+
+.pagination__total {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.pagination__buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pagination__button {
+    cursor: pointer;
+    color: #C9CACB;
+}
+
+.pagination__button:hover {
+    color: white;
+    transition: color 0.3s;
+    text-decoration: underline;
+}
+
+.pagination__button__selected {
+    color: white;
+    font-weight: bold;
+}
