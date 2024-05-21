@@ -74,7 +74,6 @@ export default function List({
         });
 
         setLoading(false);
-        openModal();
       })
       .catch(() => {
         openModal();
