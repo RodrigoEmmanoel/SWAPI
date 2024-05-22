@@ -27,6 +27,8 @@ export default function Filter({
     <div className={styles.filter}>
       <div className={styles.search}>
         <InputText
+          label="Pesquisar pelo nome"
+          placeholder="Pesquisar pelo nome"
           id="input-search"
           onValueChange={(e) => setSearch(e)}
           onKeyDown={handleKeyDown}
