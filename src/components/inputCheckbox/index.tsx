@@ -1,11 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./index.module.css";
-
-interface InputCheckboxProps {
-  id?: string;
-  label: string;
-  onValueChange: (value: boolean) => void;
-}
+import { InputCheckboxProps } from "./type";
 
 export default function InputCheckbox({
   id,
