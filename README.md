@@ -39,6 +39,10 @@ Você verá também quaisquer erros de lint no console.
 Compila o app para produção na pasta `dist`.\
 Ele corretamente bundle e otimiza o React no modo de produção.
 
+### `npm run test`
+
+Executa os testes utilizando Jest.
+
 ## Bibliotecas Utilizadas
 
 ### React
@@ -65,6 +69,14 @@ Cliente HTTP baseado em Promises para realizar requisições à API.
 
 Permite escopo local para classes CSS, evitando conflitos de nomes.
 
+### Jest
+
+Framework de teste de JavaScript com foco na simplicidade.
+
+### React Testing Library
+
+Biblioteca para testar componentes React de forma mais eficaz.
+
 ## Configuração do Projeto
 
 ### `vite.config.ts`
@@ -78,4 +90,3 @@ Configuração do TypeScript para o projeto.
 ### `.eslintrc.js`
 
 Configuração do ESLint para garantir a qualidade do código.
-
